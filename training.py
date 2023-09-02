@@ -5,16 +5,16 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropou
 from tensorflow.keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 
-
-# Assuming you have two folders: 'good' and 'bad', each containing their respective images
+print(tf.__version__)
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 # Load and preprocess data
 image_size = (1920, 1080)
-num_samples_per_class_1 = 20
-num_samples_per_class_0 = 20
+num_samples_per_class_1 = 105
+num_samples_per_class_0 = 65
 num_classes = 2
 
-# Placeholder arrays for images and labels
+# Initiate arrays for images and labels
 images = np.zeros((num_samples_per_class_1+num_samples_per_class_0, image_size[0], image_size[1], 3))
 labels = np.zeros((num_samples_per_class_1+num_samples_per_class_0,))
 
@@ -59,5 +59,11 @@ model.compile(optimizer=Adam(learning_rate=0.001), loss='binary_crossentropy', m
 
 # Train the model
 model.fit(X_train, y_train, batch_size=16, epochs=10, validation_data=(X_test, y_test))
+model.summary()
+
+# Specify the path where you want to save the model weights
+model.save_weights("model_weights.h5")
+# Save both the architecture and weights to a single file
+# model.save("complete_model.h5")
 
 print(model)
